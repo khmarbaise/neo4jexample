@@ -7,7 +7,6 @@ import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.kernel.impl.util.FileUtils;
@@ -20,13 +19,6 @@ public class Neo4JApp {
     private Node firstNode;
     private Node secondNode;
     private Relationship relationship;
-
-    // START SNIPPET: createReltype
-    private static enum RelTypes implements RelationshipType {
-	KNOWS
-    }
-
-    // END SNIPPET: createReltype
 
     public static void main(final String[] args) {
 	Neo4JApp hello = new Neo4JApp();
@@ -43,35 +35,27 @@ public class Neo4JApp {
 
 	Transaction tx = graphDb.beginTx();
 	try {
-	    // Mutating operations go here
-	    // END SNIPPET: transaction
-	    // START SNIPPET: addData
+
 	    firstNode = graphDb.createNode();
 	    firstNode.setProperty("message", "Hello, ");
 	    secondNode = graphDb.createNode();
 	    secondNode.setProperty("message", "World!");
 
-	    relationship = firstNode.createRelationshipTo(secondNode,
-		    RelTypes.KNOWS);
+	    relationship = firstNode.createRelationshipTo(secondNode, RelationTypes.KNOWS);
 	    relationship.setProperty("message", "brave Neo4j ");
-	    // END SNIPPET: addData
 
-	    // START SNIPPET: readData
 	    System.out.print(firstNode.getProperty("message"));
 	    System.out.print(relationship.getProperty("message"));
 	    System.out.print(secondNode.getProperty("message"));
-	    // END SNIPPET: readData
 
 	    greeting = ((String) firstNode.getProperty("message"))
 		    + ((String) relationship.getProperty("message"))
 		    + ((String) secondNode.getProperty("message"));
 
-	    // START SNIPPET: transaction
 	    tx.success();
 	} finally {
 	    tx.finish();
 	}
-	// END SNIPPET: transaction
     }
 
     private void clearDb(String path) {
@@ -85,7 +69,7 @@ public class Neo4JApp {
     void removeData() {
 	Transaction tx = graphDb.beginTx();
 	try {
-	    firstNode.getSingleRelationship(RelTypes.KNOWS, Direction.OUTGOING).delete();
+	    firstNode.getSingleRelationship(RelationTypes.KNOWS, Direction.OUTGOING).delete();
 	    firstNode.delete();
 	    secondNode.delete();
 
