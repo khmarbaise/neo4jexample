@@ -10,7 +10,7 @@ import com.soebes.tutorials.neo4jexample.Neo4JApp;
 public class Neo4JAppTest extends TestBase {
 
     @Test
-    public void FirstLaden() {
+    public void firstTest() {
         Neo4JApp.main(new String[] { getTargetDir() });
         assertTrue(true);
     }
