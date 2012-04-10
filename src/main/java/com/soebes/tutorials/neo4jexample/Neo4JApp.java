@@ -21,79 +21,80 @@ public class Neo4JApp {
     private Relationship relationship;
 
     public static void main(final String[] args) {
-	Neo4JApp hello = new Neo4JApp();
-	hello.createDb(args[0]);
-	hello.removeData();
-	hello.shutDown();
+        Neo4JApp hello = new Neo4JApp();
+        hello.createDb(args[0]);
+        hello.removeData();
+        hello.shutDown();
     }
 
     void createDb(String path) {
-	clearDb(path);
+        clearDb(path);
 
-	graphDb = new EmbeddedGraphDatabase(path);
-	registerShutdownHook(graphDb);
+        graphDb = new EmbeddedGraphDatabase(path);
+        registerShutdownHook(graphDb);
 
-	Transaction tx = graphDb.beginTx();
-	try {
+        Transaction tx = graphDb.beginTx();
+        try {
 
-	    firstNode = graphDb.createNode();
-	    firstNode.setProperty("message", "Hello, ");
-	    secondNode = graphDb.createNode();
-	    secondNode.setProperty("message", "World!");
+            firstNode = graphDb.createNode();
+            firstNode.setProperty("message", "Hello, ");
+            secondNode = graphDb.createNode();
+            secondNode.setProperty("message", "World!");
 
-	    relationship = firstNode.createRelationshipTo(secondNode, RelationTypes.KNOWS);
-	    relationship.setProperty("message", "brave Neo4j ");
+            relationship = firstNode.createRelationshipTo(secondNode, RelationTypes.KNOWS);
+            relationship.setProperty("message", "brave Neo4j ");
 
-	    System.out.print(firstNode.getProperty("message"));
-	    System.out.print(relationship.getProperty("message"));
-	    System.out.print(secondNode.getProperty("message"));
+            System.out.print(firstNode.getProperty("message"));
+            System.out.print(relationship.getProperty("message"));
+            System.out.print(secondNode.getProperty("message"));
 
-	    greeting = ((String) firstNode.getProperty("message"))
-		    + ((String) relationship.getProperty("message"))
-		    + ((String) secondNode.getProperty("message"));
-
-	    tx.success();
-	} finally {
-	    tx.finish();
-	}
+            greeting = ((String) firstNode.getProperty("message"))
+                    + ((String) relationship.getProperty("message"))
+                    + ((String) secondNode.getProperty("message"));
+            System.out.println("Result:" + greeting);
+            tx.success();
+        } finally {
+            tx.finish();
+        }
     }
 
     private void clearDb(String path) {
-	try {
-	    FileUtils.deleteRecursively(new File(path));
-	} catch (IOException e) {
-	    throw new RuntimeException(e);
-	}
+        try {
+            FileUtils.deleteRecursively(new File(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     void removeData() {
-	Transaction tx = graphDb.beginTx();
-	try {
-	    firstNode.getSingleRelationship(RelationTypes.KNOWS, Direction.OUTGOING).delete();
-	    firstNode.delete();
-	    secondNode.delete();
+        Transaction tx = graphDb.beginTx();
+        try {
+            firstNode.getSingleRelationship(RelationTypes.KNOWS,
+                    Direction.OUTGOING).delete();
+            firstNode.delete();
+            secondNode.delete();
 
-	    tx.success();
-	} finally {
-	    tx.finish();
-	}
+            tx.success();
+        } finally {
+            tx.finish();
+        }
     }
 
     void shutDown() {
-	System.out.println();
-	System.out.println("Shutting down database ...");
-	graphDb.shutdown();
+        System.out.println();
+        System.out.println("Shutting down database ...");
+        graphDb.shutdown();
     }
 
     private static void registerShutdownHook(final GraphDatabaseService graphDb) {
-	// Registers a shutdown hook for the Neo4j instance so that it
-	// shuts down nicely when the VM exits (even if you "Ctrl-C" the
-	// running example before it's completed)
-	Runtime.getRuntime().addShutdownHook(new Thread() {
-	    @Override
-	    public void run() {
-		graphDb.shutdown();
-	    }
-	});
+        // Registers a shutdown hook for the Neo4j instance so that it
+        // shuts down nicely when the VM exits (even if you "Ctrl-C" the
+        // running example before it's completed)
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                graphDb.shutdown();
+            }
+        });
     }
 }
