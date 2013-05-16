@@ -8,7 +8,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.kernel.impl.util.FileUtils;
 
 
@@ -31,7 +31,7 @@ public class Neo4JApp {
     void createDb(String path) {
         clearDb(path);
 
-        graphDb = new EmbeddedGraphDatabase(path);
+        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(path);
         registerShutdownHook(graphDb);
 
         Transaction tx = graphDb.beginTx();
