@@ -6,7 +6,6 @@ import java.io.File;
 
 import org.testng.annotations.Test;
 
-import com.soebes.tutorials.neo4jexample.Neo4JApp;
 
 
 public class Neo4JAppTest extends TestBase {

@@ -1,4 +1,4 @@
-package com.soebes.tutorials.neo4jexample;
+package com.soebes.tutorials;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.kernel.impl.util.FileUtils;
+
 
 public class Neo4JApp {
 

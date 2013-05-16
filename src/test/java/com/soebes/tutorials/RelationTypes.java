@@ -1,4 +1,4 @@
-package com.soebes.tutorials.neo4jexample;
+package com.soebes.tutorials;
 
 import org.neo4j.graphdb.RelationshipType;
 
