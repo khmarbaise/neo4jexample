@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.soebes.smpp</groupId>
     <artifactId>smpp</artifactId>
-    <version>0.6</version>
+    <version>0.6.4</version>
   </parent>
   
   <groupId>com.soebes.tutorials</groupId>
@@ -22,7 +22,7 @@
 
 
   <properties>
-    <neo4j.version>1.8</neo4j.version>
+    <neo4j.version>2.1.0-M01</neo4j.version>
   </properties>
 
   <build>
